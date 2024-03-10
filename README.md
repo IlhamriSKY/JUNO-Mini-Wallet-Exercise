@@ -2,12 +2,12 @@
 
 <p align="center">
   <h1 align="center">Mini Wallet Exercise</h1>
-  <h4 align="center">📦 REST API starter kit powered by Laravel, OpenAPI, Sanctum.</h4>
+  <h4 align="center">📦 This is a technical exercise for software engineering candidates.</h4>
 
 ## Documentation
 
 -   [Documentation](https://documenter.getpostman.com/view/1766937/2sA2xh3YNf)
--   [Postman Collection](https://arifszn.github.io/pandora/docs/api-documentation/swagger-ui)
+-   [Postman Collection](https://github.com/IlhamriSKY/JUNO-Mini-Wallet-Exercise/blob/main/Mini_Wallet_Exercise.postman_collection.json)
 
 ## Installation
 
