@@ -1,0 +1,313 @@
+openapi: 3.0.0
+info:
+  title: Pandora
+  description: "## Introduction\n\n API documentation for Pandora - REST API starter kit powered by Laravel, OpenAPI, Sanctum.\n\n- [GitHub](https://github.com/arifszn/pandora)\n- [MIT License](https://github.com/arifszn/pandora/blob/main/LICENSE)"
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost'
+    description: 'Local API server'
+paths:
+  /api/admin/login:
+    post:
+      tags:
+        - adminAuth
+      summary: 'Login an admin'
+      description: 'Login an admin.'
+      operationId: Admin.AuthController.login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminLoginRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoggedInAdminResource'
+        '422':
+          description: 'Unprocessable entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                properties:
+                  message: { type: string, example: 'Invalid credentials.' }
+                type: object
+  /api/admin/logout:
+    post:
+      tags:
+        - adminAuth
+      summary: 'Logout an admin'
+      description: 'Logout an admin.'
+      operationId: Admin.AuthController.logout
+      responses:
+        '204':
+          description: 'No content'
+      security:
+        -
+          BearerToken: []
+  /api/admin/profile:
+    get:
+      tags:
+        - adminProfile
+      summary: me
+      description: 'Get the authenticated admin.'
+      operationId: Admin.ProfileController.me
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminResource'
+      security:
+        -
+          BearerToken: []
+  /api/signup:
+    post:
+      tags:
+        - auth
+      summary: 'Signup a user'
+      description: 'Signup a user.'
+      operationId: AuthController.signup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoggedInUserResource'
+        '422':
+          description: 'Unprocessable entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+  /api/login:
+    post:
+      tags:
+        - auth
+      summary: 'Login a user'
+      description: 'Login a user.'
+      operationId: AuthController.login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoggedInUserResource'
+        '422':
+          description: 'Unprocessable entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                properties:
+                  message: { type: string, example: 'Invalid credentials.' }
+                type: object
+  /api/logout:
+    post:
+      tags:
+        - auth
+      summary: 'Logout a user'
+      description: 'Logout a user.'
+      operationId: AuthController.logout
+      responses:
+        '204':
+          description: 'No content'
+      security:
+        -
+          BearerToken: []
+  /api/profile:
+    get:
+      tags:
+        - profile
+      summary: me
+      description: 'Get the authenticated user.'
+      operationId: ProfileController.me
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResource'
+      security:
+        -
+          BearerToken: []
+components:
+  schemas:
+    ValidationError:
+      properties:
+        message:
+          type: string
+          example: 'The given data was invalid.'
+        errors:
+          properties:
+            'key 1':
+              type: array
+              items:
+                type: string
+                example: 'Error message 1'
+            'key 2':
+              type: array
+              items:
+                type: string
+                example: 'Error message 2'
+          type: object
+      type: object
+    AdminLoginRequest:
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: root@admin.com
+        password:
+          type: string
+          example: '123456'
+      type: object
+    LoginRequest:
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: john@example.com
+        password:
+          type: string
+          example: '123456'
+      type: object
+    SignupRequest:
+      required:
+        - name
+        - email
+        - password
+        - password_confirmation
+      properties:
+        name:
+          type: string
+          example: 'John Doe'
+        email:
+          type: string
+          format: email
+          example: john@example.com
+        password:
+          type: string
+          example: '123456'
+        password_confirmation:
+          type: string
+          example: '123456'
+      type: object
+    AccessTokenResource:
+      properties:
+        access_token:
+          type: string
+          example: 6|JeXDJdhmaQN4Nl3T3DaD9sE20PoPrdUx15W0m2eA
+        type:
+          type: string
+          example: bearer
+      type: object
+    AdminResource:
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Admin
+        email:
+          type: string
+          example: root@admin.com
+        avatar_url:
+          type: string
+          example: 'https://someplace.com/avatar'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          example: '2022-08-27T16:14:46.000000Z'
+      type: object
+    LoggedInAdminResource:
+      properties:
+        admin:
+          $ref: '#/components/schemas/AdminResource'
+        token:
+          $ref: '#/components/schemas/AccessTokenResource'
+      type: object
+    LoggedInUserResource:
+      properties:
+        user:
+          $ref: '#/components/schemas/UserResource'
+        token:
+          $ref: '#/components/schemas/AccessTokenResource'
+      type: object
+    UserResource:
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: 'John Doe'
+        email:
+          type: string
+          example: john@example.com
+        avatar_url:
+          type: string
+          example: 'https://someplace.com/avatar'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          example: '2022-08-27T16:14:46.000000Z'
+      type: object
+  securitySchemes:
+    BearerToken:
+      type: http
+      bearerFormat: JWT
+      scheme: bearer
+tags:
+  -
+    name: auth
+    description: 'User authentication'
+  -
+    name: adminAuth
+    description: 'Admin authentication'
+  -
+    name: profile
+    description: 'User profile'
+  -
+    name: adminProfile
+    description: 'Admin profile'

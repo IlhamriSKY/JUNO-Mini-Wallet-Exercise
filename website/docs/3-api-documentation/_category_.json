@@ -1,0 +1,11 @@
+{
+  "label": "API Documentation",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "API Documentation",
+    "description": "All the available APIs are documented with OpenAPI Specification. The documentation can be viewed in Redoc or Swagger UI.",
+    "slug": "/api-documentation"
+  }
+}
